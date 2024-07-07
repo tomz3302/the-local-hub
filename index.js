@@ -85,6 +85,9 @@ app.get('/:category', async function(req, res) {
             sortCriteria.created_at = 1;
         }
     }
+    app.get('/tezak7amra', async function(req,res){
+        res.send("your ass is red");
+    })
 
     try {
         const results = await products.find({ category: req.params.category })
