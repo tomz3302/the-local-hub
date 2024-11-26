@@ -9,12 +9,14 @@ const localBrand = require("./localBrand");
 //const cookieParser = require("cookie-parser");
 const loggedinbrandsroute = require('./routes/loggedinbrand')
 const jwt_secret = 'tomzorrow@auc.kosak';
+const authenticateLocalBrand = require('./middleware/authenticateLocalBrand');
+const isverified = require('./middleware/isverified');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //app.use(cookieParser());
 
-app.use("/edit", loggedinbrandsroute);
+app.use("/edit",authenticateLocalBrand, isverified, loggedinbrandsroute);
 
 app.get('/home', async function(req,res){
     let categories = await products.distinct('category');
@@ -147,10 +149,18 @@ app.post('/registerbrand', async function(req,res){
 
 app.post('/brandlogin', async function(req, res) {
     const { email, password } = req.body;
+    
+    if (!email || !password) {
+        return res.status(400).json({
+            message: 'Bad Request',
+            error: 'Email and password are required'
+        });
+    }
 
     try {
-        // Find the brand by email
+        
         const currentbrand = await localBrand.findOne({ email: email });
+        
 
         if (!currentbrand) {
             return res.status(401).json({

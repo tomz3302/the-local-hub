@@ -7,7 +7,7 @@ const authenticateLocalBrand = require('../middleware/authenticateLocalBrand');
 const isverified = require('../middleware/isverified');
 
 //variation 1
-router.get('/', authenticateLocalBrand, isverified, async function(req,res){
+router.get('/',async function(req,res){
     const localbrandId = req.localbrand.brandId;
     const brandname = await localBrand.findOne({_id: localbrandId}, "name");
     const results = await products.find({brand: brandname.name});
