@@ -4,9 +4,10 @@ const products = require("../products");
 
 let router = express.Router();
 const authenticateLocalBrand = require('../middleware/authenticateLocalBrand');
+const isverified = require('../middleware/isverified');
 
 //variation 1
-router.get('/', authenticateLocalBrand, async function(req,res){
+router.get('/', authenticateLocalBrand, isverified, async function(req,res){
     const localbrandId = req.localbrand.brandId;
     const brandname = await localBrand.findOne({_id: localbrandId}, "name");
     const results = await products.find({brand: brandname.name});
@@ -18,32 +19,6 @@ router.get('/', authenticateLocalBrand, async function(req,res){
 
 })
 
-//variation 2
-router.get("/:brandname",authenticateLocalBrand, async function(req,res){
-    const brandname = req.params.brandname;
-    let brandId = await localBrand.findOne({name: brandname} , "_id");
-    brandId = await brandId._id.toString();
-    const localbrand = req.localbrand;
-    console.log('brand id: ', brandId);
-    console.log("the localbrand id in the token: ", localbrand.brandId);
+//variation 2 is removed
 
-
-    
-    if (localbrand.brandId !== brandId) {
-        return res.status(403).json({
-            message: 'Access denied',
-            error: 'You do not have access to these resources'
-        });
-    }
-
-    
-    try {
-        const yourproducts = await products.find({brand: brandname})
-        res.json({ message: 'Access granted', yourproducts });
-    } catch (err) {
-        console.error('Error fetching products:', err);
-        res.status(500).json({ message: 'Internal server error', error: err.message });
-    }
-
-} )
 module.exports = router;

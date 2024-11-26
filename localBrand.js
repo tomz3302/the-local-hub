@@ -10,7 +10,11 @@ const localBrandSchema = new Schema({
   password: { type: String, required: true },
   logoImage: { type: Number, required: false },
   phoneNumber: {type: Number, required: true},
-  authenticated : {type: Boolean, default: false},
+  authenticated: {
+    type: String,
+    enum: ['pending', 'rejected', 'accepted'],
+    default: 'pending'
+  },
   created_at: { type: Date, default: Date.now }
 });
 
