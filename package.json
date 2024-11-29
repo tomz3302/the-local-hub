@@ -9,9 +9,11 @@
   "author": "Omar Dardir",
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "^2.46.1",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
+    "fetch-blob": "^4.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.1",
     "nodemon": "^3.1.4"
